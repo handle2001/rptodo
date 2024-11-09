@@ -8,11 +8,13 @@ from rptodo import DB_READ_ERROR
 from rptodo.database import DatabaseHandler
 
 class CurrentTodo(NamedTuple):
+    """A class defining the todo item currently being worked on"""
     todo: Dict[str, Any]
     error: int
 
 
 class Todoer:
+    """Main application class providing high-level methods for managing to-do items"""
     def __init__(self, db_path: Path) -> None:
         self._db_handler = DatabaseHandler(db_path)
 

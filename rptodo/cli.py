@@ -41,8 +41,9 @@ def _version_callback(value: bool) -> None:
     if value:
         typer.echo(f"{__app_name__} v{__version__}")
         raise typer.Exit()
-    
+
 def get_todoer() -> rptodo.Todoer:
+    """Get a new Todoer instance"""
     if config.CONFIG_FILE_PATH.exists():
         db_path = database.get_database_path(config.CONFIG_FILE_PATH)
     else:
@@ -59,7 +60,7 @@ def get_todoer() -> rptodo.Todoer:
             fg=typer.colors.RED,
         )
         raise typer.Exit(1)
-    
+
 @app.command()
 def add(
     description: List[str] = typer.Argument(...),
@@ -92,4 +93,5 @@ def main(
         is_eager=True,
     )
 ) -> None:
+    """Main app"""
     return

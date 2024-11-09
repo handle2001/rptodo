@@ -1,3 +1,4 @@
+"""Tests for the RP To-do app"""
 # tests/test_rptodo.py
 import json
 
@@ -34,6 +35,7 @@ test_data2 = {
 
 @pytest.fixture
 def mock_json_file(tmp_path):
+    """Setup a mock json file for testing purposes"""
     todo = [
         {
             "Description": "Get some milk",
@@ -62,14 +64,18 @@ def mock_json_file(tmp_path):
     ],
 )
 def test_add(mock_json_file, description, priority, expected):
+    """Test adding a new to-do"""
     todoer = rptodo.Todoer(mock_json_file)
     assert todoer.add(description, priority) == expected
     read = todoer._db_handler.read_todos()
     assert len(read.todo_list) == 2
 
 runner = CliRunner()
+# CliRunner is used to test the app's command line interface
+# Like Selenium but for the terminal
 
 def test_version():
+    """Test printing the version from command line"""
     result = runner.invoke(cli.app, ["--version"])
     assert result.exit_code == 0
     assert f"{__app_name__} v{__version__}\n" in result.stdout

@@ -1,1 +1,2 @@
-rptodo/__pycache__/__init__.cpython-310.pyc
+rptodo/__pycache__/*.pyc
+.coverage

@@ -9,14 +9,17 @@ from typing import Any, Dict, List, NamedTuple
 from rptodo import DB_READ_ERROR, DB_WRITE_ERROR, JSON_ERROR, SUCCESS
 
 class DBResponse(NamedTuple):
+    """A class defining responses from the database"""
     todo_list: List[Dict[str, Any]]
     error: int
 
 class DatabaseHandler:
+    """A class providing methods for interacting with the to-do database"""
     def __init__(self, db_path: Path) -> None:
         self._db_path = db_path
 
     def read_todos(self) -> DBResponse:
+        """Read existing to-do items from the database"""
         try:
             with self._db_path.open("r") as db:
                 try:
@@ -25,8 +28,9 @@ class DatabaseHandler:
                     return DBResponse([], JSON_ERROR)
         except OSError:
             return DBResponse([], DB_READ_ERROR)
-        
+
     def write_todos(self, todo_list: List[Dict[str, Any]]) -> DBResponse:
+        """Write the current list of to-do items to the database"""
         try:
             with self._db_path.open("w") as db:
                 json.dump(todo_list, db, indent=4)
