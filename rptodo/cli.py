@@ -2,11 +2,11 @@
 # rptodo/cli.py
 
 from pathlib import Path
-from typing import Optional
+from typing import List, Optional
 
 import typer
 
-from rptodo import ERRORS, __app_name__, __version__, config, database
+from rptodo import ERRORS, __app_name__, __version__, config, database, rptodo
 
 app = typer.Typer()
 
@@ -41,6 +41,44 @@ def _version_callback(value: bool) -> None:
     if value:
         typer.echo(f"{__app_name__} v{__version__}")
         raise typer.Exit()
+    
+def get_todoer() -> rptodo.Todoer:
+    if config.CONFIG_FILE_PATH.exists():
+        db_path = database.get_database_path(config.CONFIG_FILE_PATH)
+    else:
+        typer.secho(
+            'Config file not found. Please run "rptodo init"',
+            fg=typer.colors.RED,
+        )
+        raise typer.Exit(1)
+    if db_path.exists():
+        return rptodo.Todoer(db_path)
+    else:
+        typer.secho(
+            'Database not found. Please run "rptodo init"',
+            fg=typer.colors.RED,
+        )
+        raise typer.Exit(1)
+    
+@app.command()
+def add(
+    description: List[str] = typer.Argument(...),
+    priority: int = typer.Option(2, "--priority", "-p", min=1, max=3),
+) -> None:
+    """Add a new to-do with a DESCRIPTION"""
+    todoer = get_todoer()
+    todo, error = todoer.add(description, priority)
+    if error:
+        typer.secho(
+            f'Adding to-do failed with "{ERRORS[error]}"', fg=typer.colors.RED
+        )
+        raise typer.Exit(1)
+    else:
+        typer.secho(
+            f"""to-do: "{todo['Description']}" was added """
+            f"""with priority: {priority}""",
+            fg=typer.colors.GREEN,
+        )
 
 
 @app.callback()
