@@ -1,4 +1,5 @@
 """This module provides the RP To-Do model controller."""
+
 # rptodo/rptodo.py
 
 from pathlib import Path
@@ -7,14 +8,17 @@ from typing import Any, Dict, List, NamedTuple
 from rptodo import DB_READ_ERROR
 from rptodo.database import DatabaseHandler
 
+
 class CurrentTodo(NamedTuple):
     """A class defining the todo item currently being worked on"""
+
     todo: Dict[str, Any]
     error: int
 
 
 class Todoer:
     """Main application class providing high-level methods for managing to-do items"""
+
     def __init__(self, db_path: Path) -> None:
         self._db_handler = DatabaseHandler(db_path)
 
@@ -34,7 +38,7 @@ class Todoer:
         read.todo_list.append(todo)
         write = self._db_handler.write_todos(read.todo_list)
         return CurrentTodo(todo, write.error)
-    
+
     def get_todo_list(self) -> List[Dict[str, Any]]:
         """Return the current to-do list"""
         read = self._db_handler.read_todos()

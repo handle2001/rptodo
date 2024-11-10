@@ -1,4 +1,5 @@
 """This module provides the RP To-Do CLI."""
+
 # rptodo/cli.py
 
 from pathlib import Path
@@ -9,6 +10,7 @@ import typer
 from rptodo import ERRORS, __app_name__, __version__, config, database, rptodo
 
 app = typer.Typer()
+
 
 @app.command()
 def init(
@@ -37,10 +39,12 @@ def init(
     else:
         typer.secho(f"The to-do database is {db_path}", fg=typer.colors.GREEN)
 
+
 def _version_callback(value: bool) -> None:
     if value:
         typer.echo(f"{__app_name__} v{__version__}")
         raise typer.Exit()
+
 
 def get_todoer() -> rptodo.Todoer:
     """Get a new Todoer instance"""
@@ -61,6 +65,7 @@ def get_todoer() -> rptodo.Todoer:
         )
         raise typer.Exit(1)
 
+
 @app.command()
 def add(
     description: List[str] = typer.Argument(...),
@@ -71,7 +76,8 @@ def add(
     todo, error = todoer.add(description, priority)
     if error:
         typer.secho(
-            f'Adding to-do failed with "{ERRORS[error]}"', fg=typer.colors.RED
+            f'Adding to-do failed with "{ERRORS[error]}"',
+            fg=typer.colors.RED,
         )
         raise typer.Exit(1)
     else:
@@ -81,6 +87,7 @@ def add(
             fg=typer.colors.GREEN,
         )
 
+
 @app.command(name="list")
 def list_all() -> None:
     """List all to-dos."""
@@ -88,7 +95,8 @@ def list_all() -> None:
     todo_list = todoer.get_todo_list()
     if len(todo_list) == 0:
         typer.secho(
-            "There are no tasks in the to-do list yet", fg=typer.colors.RED
+            "There are no tasks in the to-do list yet",
+            fg=typer.colors.RED,
         )
         raise typer.Exit
     typer.secho("\nTo-Do List:\n", fg=typer.colors.BLUE, bold=True)
@@ -108,9 +116,10 @@ def list_all() -> None:
             f"| ({priority}){(len(columns[1]) - len(str(priority)) -4) * ' '}"
             f"| {done}{(len(columns[2]) - len(str(done)) - 2) * ' '}"
             f"| {desc}",
-            fg=typer.colors.BLUE
+            fg=typer.colors.BLUE,
         )
     typer.secho("-" * len(headers) + "\n", fg=typer.colors.BLUE)
+
 
 @app.callback()
 def main(
@@ -121,7 +130,7 @@ def main(
         help="Show the application's version and exit.",
         callback=_version_callback,
         is_eager=True,
-    )
+    ),
 ) -> None:
     """Main app"""
     return

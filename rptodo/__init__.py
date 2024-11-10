@@ -1,4 +1,5 @@
 """Top-level package for RP To-Do."""
+
 # rptodo/__init__.py
 
 __app_name__ = "rptodo"
