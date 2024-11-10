@@ -1,4 +1,5 @@
 """This module provides the RP To-Do config functionality."""
+
 # rptodo/config.py
 
 import configparser
@@ -6,12 +7,11 @@ from pathlib import Path
 
 import typer
 
-from rptodo import (
-    DB_WRITE_ERROR, DIR_ERROR, FILE_ERROR, SUCCESS, __app_name__
-)
+from rptodo import DB_WRITE_ERROR, DIR_ERROR, FILE_ERROR, SUCCESS, __app_name__
 
 CONFIG_DIR_PATH = Path(typer.get_app_dir(__app_name__))
 CONFIG_FILE_PATH = CONFIG_DIR_PATH / "config.ini"
+
 
 def init_app(db_path: str) -> int:
     """Initialize the application."""
@@ -23,6 +23,7 @@ def init_app(db_path: str) -> int:
         return database_code
     return SUCCESS
 
+
 def _init_config_file() -> int:
     try:
         CONFIG_DIR_PATH.mkdir(exist_ok=True)
@@ -33,6 +34,7 @@ def _init_config_file() -> int:
     except OSError:
         return FILE_ERROR
     return SUCCESS
+
 
 def _create_database(db_path: str) -> int:
     config_parser = configparser.ConfigParser()
