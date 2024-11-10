@@ -1,6 +1,2 @@
-rptodo/__pycache__/*.pyc
+**/__pycache__/
 .coverage
-tests/__pycache__/test_rptodo.cpython-313-pytest-8.3.3.pyc
-tests/__pycache__/test_rptodo.cpython-313-pytest-8.3.3.pyc
-rptodo/__pycache__/database.cpython-313.pyc
-rptodo/__pycache__/cli.cpython-313.pyc
